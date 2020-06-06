@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_pokemon"
+            android:icon="@drawable/ic_adjust_black_24dp"
+            android:title="Pokemon" />
+        <item
+            android:id="@+id/nav_items"
+            android:icon="@drawable/ic_adjust_black_24dp"
+            android:title="Items" />
+        <item
+            android:id="@+id/nav_locations"
+            android:icon="@drawable/ic_adjust_black_24dp"
+            android:title="Locations" />
+        <item
+            android:id="@+id/nav_regions"
+            android:icon="@drawable/ic_adjust_black_24dp"
+            android:title="Regions" />
+        <item
+            android:id="@+id/nav_types"
+            android:icon="@drawable/ic_adjust_black_24dp"
+            android:title="Types" />
+    </group>
+
+    <item android:title="communicate">
+        <menu>
+            <item
+                android:id="@+id/share"
+                android:icon="@mipmap/ic_launcher_round"
+                android:title="Share" />
+        </menu>
+    </item>
+
+</menu>

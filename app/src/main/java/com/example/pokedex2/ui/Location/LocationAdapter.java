@@ -14,13 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.pokedex2.MainActivity;
 import com.example.pokedex2.R;
+import com.example.pokedex2.ui.main.MainFragment;
 
 import java.util.ArrayList;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder>{
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
 
-    private ArrayList<String> locations ;
+    private ArrayList<String> locations;
     private Context mcontext;
 
     public LocationAdapter(ArrayList<String> locations, Context mcontext) {
@@ -44,6 +46,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Toast.makeText(mcontext, locations.get(position), Toast.LENGTH_SHORT).show();
+                if (MainFragment.publicPokeURL != null) {
+                    MainFragment.publicPokeURL = MainFragment.publicPokeURL + "/" + locations.get(position);
+                    MainActivity.fragmentManager.beginTransaction()
+                            .replace(R.id.container, MainFragment.newInstance())
+                            .commitNow();
+
+                }
             }
         });
     }

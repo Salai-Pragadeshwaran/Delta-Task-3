@@ -1,20 +1,9 @@
-package com.example.pokedex2.ui.main;
-
-import androidx.lifecycle.ViewModelProviders;
+package com.example.pokedex2.ui.Location;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,44 +11,50 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.pokedex2.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class RegionFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<String>>{
 
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Pokemon>> {
-
-    public static String publicPokeURL = null;
-    public static String publicFromFragment = null;
-
-    private MainViewModel mViewModel;
+    private RegionViewModel mViewModel;
     LoaderManager loaderManager ;
-    RecyclerView pokeList;
-    public static MainFragment newInstance() {
-        return new MainFragment();
-    }
-    PokemonAdapter pokemonAdapter;
-    ArrayList<Pokemon> pokemons;
-    public String URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0";//+ 20*(mViewModel.pageNo-1);
+    RecyclerView locationList;
+    LocationAdapter locationAdapter;
+    ArrayList<String> locations;
+    String urlComponent = "region";
+    public String URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/?limit=20&offset=0";//+ 20*(mViewModel.pageNo-1);
     TextView mEmptyStateTextView;
     View loadingIndicator;
 
-    @Nullable
+    public static RegionFragment newInstance() {
+        return new RegionFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.pokemon_fragment, container, false);
+        View root =  inflater.inflate(R.layout.location_fragment, container, false);
 
-        pokemons = new ArrayList<>();
-        pokemonAdapter = new PokemonAdapter(pokemons, getContext());
-        mEmptyStateTextView = (TextView) root.findViewById(R.id.empty_view);
-        loadingIndicator = root.findViewById(R.id.progress_bar);
+        locations = new ArrayList<String>();
+        locationAdapter = new LocationAdapter(locations, root.getContext());
+        mEmptyStateTextView = (TextView) root.findViewById(R.id.empty_view_location);
+        loadingIndicator = root.findViewById(R.id.progress_bar_location);
 
-        pokeList = (RecyclerView) root.findViewById(R.id.pokemon_Recycler);
-        pokeList.setAdapter(pokemonAdapter);
+        locationList = (RecyclerView) root.findViewById(R.id.location_Recycler);
+        locationList.setAdapter(locationAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        pokeList.setLayoutManager(linearLayoutManager);
+        locationList.setLayoutManager(linearLayoutManager);
 
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
@@ -87,11 +82,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         }
 
 
-        TextView previous = (TextView) root.findViewById(R.id.prevPage);
-        TextView next = (TextView) root.findViewById(R.id.nextPage);
-        final TextView pageNo = (TextView) root.findViewById(R.id.pageNo);
-        Button search = (Button) root.findViewById(R.id.startSearch);
-        final EditText searchText = (EditText) root.findViewById(R.id.searchPokemon);
+        TextView previous = (TextView) root.findViewById(R.id.prevPage_location);
+        TextView next = (TextView) root.findViewById(R.id.nextPage_location);
+        final TextView pageNo = (TextView) root.findViewById(R.id.pageNo_location);
+        Button search = (Button) root.findViewById(R.id.startSearch_location);
+        final EditText searchText = (EditText) root.findViewById(R.id.searchLocation);
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,14 +95,14 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                 searchQuery.toLowerCase();
 
                 if (searchQuery!="") {
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon/" + searchQuery;
+                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/" + searchQuery;
                 }else {
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
+                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
                 }
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, MainFragment.this);
+                loaderManager.initLoader(0, null, RegionFragment.this);
             }
         });
 
@@ -120,11 +115,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                     text = "Page "+text;
                     pageNo.setText(text);
 
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
+                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
 
                     loaderManager.destroyLoader(0);
                     loadingIndicator.setVisibility(View.VISIBLE);
-                    loaderManager.initLoader(0, null, MainFragment.this);
+                    loaderManager.initLoader(0, null, RegionFragment.this);
                 }
             }
         });
@@ -137,13 +132,14 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                 text = "Page "+text;
                 pageNo.setText(text);
 
-                URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
+                URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, MainFragment.this);
+                loaderManager.initLoader(0, null, RegionFragment.this);
             }
         });
+
 
         return root;
     }
@@ -151,36 +147,31 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(RegionViewModel.class);
         // TODO: Use the ViewModel
     }
 
     @NonNull
     @Override
-    public Loader<List<Pokemon>> onCreateLoader(int id, @Nullable Bundle args) {
-        if (publicPokeURL!=null){
-            return new PokemonLoader(getContext(), publicPokeURL);
-        }
-        return new PokemonLoader(getContext(), URL_POKEAPI);
+    public Loader<List<String>> onCreateLoader(int id, @Nullable Bundle args) {
+        return new LocationLoader(getContext(), URL_POKEAPI);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<List<Pokemon>> loader, List<Pokemon> data) {
-        mEmptyStateTextView.setText(R.string.no_pokemons);
+    public void onLoadFinished(@NonNull Loader<List<String>> loader, List<String> data) {
+        mEmptyStateTextView.setText(R.string.no_items);
         loadingIndicator.setVisibility(View.GONE);
-        pokemons.clear();
-        pokeList.removeAllViewsInLayout();
-        pokeList.setAdapter(pokemonAdapter);
-        pokemons.addAll(data);
-        if(pokemons.size()!=0){
+        locations.clear();
+        locationList.removeAllViewsInLayout();
+        locationList.setAdapter(locationAdapter);
+        locations.addAll(data);
+        if(locations.size()!=0){
             mEmptyStateTextView.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<List<Pokemon>> loader) {
-        pokemons.clear();
+    public void onLoaderReset(@NonNull Loader<List<String>> loader) {
+        locations.clear();
     }
-
-
 }

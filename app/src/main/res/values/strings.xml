@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">Pokedex2</string>
+    <string name="app_name">Pokedex</string>
     <string name="no_internet_connection">No internet Connection</string>
     <string name="no_pokemons">No Pokemons available</string>
     <string name="no_items">No items Available</string>
+    <string name="close_drawer">Close Navigation Drawer</string>
+    <string name="open_drawer">Open Navigation Drawer</string>
+    <string name="no_location">No Locations Available</string>
+    <string name="no_type">No Type available</string>
 </resources>

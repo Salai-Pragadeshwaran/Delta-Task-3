@@ -46,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
                 .asBitmap()
                 .load(imageUrl)
                 .circleCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.circle_bg)
                 .into(holder.itemImage);
 
         holder.parent.setOnClickListener(new View.OnClickListener() {

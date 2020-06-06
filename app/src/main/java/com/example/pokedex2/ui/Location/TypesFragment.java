@@ -1,59 +1,50 @@
 package com.example.pokedex2.ui.Location;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-
 import com.example.pokedex2.R;
-import com.example.pokedex2.ui.items.Item;
-import com.example.pokedex2.ui.items.ItemAdapter;
-import com.example.pokedex2.ui.items.ItemFragment;
-import com.example.pokedex2.ui.items.ItemLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<String>>{
+public class TypesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<String>> {
 
-    private LocationViewModel mViewModel;
-    LoaderManager loaderManager ;
+
+    LoaderManager loaderManager;
     RecyclerView locationList;
     LocationAdapter locationAdapter;
     ArrayList<String> locations;
-    String urlComponent = "location";
-    public String URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/?limit=20&offset=0";//+ 20*(mViewModel.pageNo-1);
+    String urlComponent = "type";
+    public String URL_POKEAPI = "https://pokeapi.co/api/v2/" + urlComponent + "/?limit=20&offset=0";//+ 20*(mViewModel.pageNo-1);
     TextView mEmptyStateTextView;
     View loadingIndicator;
 
-    public static LocationFragment newInstance() {
-        return new LocationFragment();
+    public static TypesFragment newInstance() {
+        return new TypesFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root =  inflater.inflate(R.layout.location_fragment, container, false);
+        View root = inflater.inflate(R.layout.location_fragment, container, false);
 
         locations = new ArrayList<String>();
         locationAdapter = new LocationAdapter(locations, root.getContext());
@@ -103,49 +94,15 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
                 String searchQuery = searchText.getText().toString();
                 searchQuery.toLowerCase();
 
-                if (searchQuery!="") {
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/" + searchQuery;
-                }else {
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
+                if (searchQuery != "") {
+                    URL_POKEAPI = "https://pokeapi.co/api/v2/" + urlComponent + "/" + searchQuery;
+                } else {
+                    //URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
                 }
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, LocationFragment.this);
-            }
-        });
-
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mViewModel.pageNo>1) {
-                    mViewModel.pageNo--;
-                    String text = String.valueOf(mViewModel.pageNo);
-                    text = "Page "+text;
-                    pageNo.setText(text);
-
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
-
-                    loaderManager.destroyLoader(0);
-                    loadingIndicator.setVisibility(View.VISIBLE);
-                    loaderManager.initLoader(0, null, LocationFragment.this);
-                }
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.pageNo++;
-                String text = String.valueOf(mViewModel.pageNo);
-                text = "Page "+text;
-                pageNo.setText(text);
-
-                URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
-
-                loaderManager.destroyLoader(0);
-                loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, LocationFragment.this);
+                loaderManager.initLoader(0, null, TypesFragment.this);
             }
         });
 
@@ -153,12 +110,6 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
         return root;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
-        // TODO: Use the ViewModel
-    }
 
     @NonNull
     @Override
@@ -168,13 +119,13 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<String>> loader, List<String> data) {
-        mEmptyStateTextView.setText(R.string.no_location);
+        mEmptyStateTextView.setText(R.string.no_type);
         loadingIndicator.setVisibility(View.GONE);
         locations.clear();
         locationList.removeAllViewsInLayout();
         locationList.setAdapter(locationAdapter);
         locations.addAll(data);
-        if(locations.size()!=0){
+        if (locations.size() != 0) {
             mEmptyStateTextView.setVisibility(View.GONE);
         }
     }
