@@ -92,7 +92,7 @@ public class TypesFragment extends Fragment implements LoaderManager.LoaderCallb
             @Override
             public void onClick(View v) {
                 String searchQuery = searchText.getText().toString();
-                searchQuery.toLowerCase();
+                searchQuery = searchQuery.toLowerCase();
 
                 if (searchQuery != "") {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/" + urlComponent + "/" + searchQuery;

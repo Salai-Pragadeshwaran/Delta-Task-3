@@ -96,7 +96,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onClick(View v) {
                 String searchQuery = searchText.getText().toString();
-                searchQuery.toLowerCase();
+                searchQuery = searchQuery.toLowerCase();
 
                 if (searchQuery!="") {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/item/" + searchQuery;
@@ -106,6 +106,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setVisibility(View.GONE);
                 loaderManager.initLoader(0, null, ItemFragment.this);
             }
         });
@@ -123,6 +124,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
                     loaderManager.destroyLoader(0);
                     loadingIndicator.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setVisibility(View.GONE);
                     loaderManager.initLoader(0, null, ItemFragment.this);
                 }
             }
@@ -140,6 +142,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setVisibility(View.GONE);
                 loaderManager.initLoader(0, null, ItemFragment.this);
             }
         });

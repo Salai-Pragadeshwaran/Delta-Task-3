@@ -92,47 +92,13 @@ public class RegionFragment extends Fragment implements LoaderManager.LoaderCall
             @Override
             public void onClick(View v) {
                 String searchQuery = searchText.getText().toString();
-                searchQuery.toLowerCase();
+                searchQuery = searchQuery.toLowerCase();
 
                 if (searchQuery!="") {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/" + searchQuery;
                 }else {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
                 }
-
-                loaderManager.destroyLoader(0);
-                loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, RegionFragment.this);
-            }
-        });
-
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mViewModel.pageNo>1) {
-                    mViewModel.pageNo--;
-                    String text = String.valueOf(mViewModel.pageNo);
-                    text = "Page "+text;
-                    pageNo.setText(text);
-
-                    URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
-
-                    loaderManager.destroyLoader(0);
-                    loadingIndicator.setVisibility(View.VISIBLE);
-                    loaderManager.initLoader(0, null, RegionFragment.this);
-                }
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.pageNo++;
-                String text = String.valueOf(mViewModel.pageNo);
-                text = "Page "+text;
-                pageNo.setText(text);
-
-                URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);

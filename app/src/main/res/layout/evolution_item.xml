@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/evolution_list_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@drawable/shadow_bg"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/evolution_Image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:transitionName="pokeimg_transition2"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/evolution_pokemon"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="pokemon"
+        android:paddingBottom="8dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+</LinearLayout>

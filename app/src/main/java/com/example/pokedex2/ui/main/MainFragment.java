@@ -97,7 +97,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onClick(View v) {
                 String searchQuery = searchText.getText().toString();
-                searchQuery.toLowerCase();
+                searchQuery = searchQuery.toLowerCase();
 
                 if (searchQuery!="") {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon/" + searchQuery;
@@ -107,6 +107,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setVisibility(View.GONE);
                 loaderManager.initLoader(0, null, MainFragment.this);
             }
         });
@@ -114,7 +115,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mViewModel.pageNo>1) {
+                if ((mViewModel.pageNo>1)&&(publicPokeURL==null)) {
                     mViewModel.pageNo--;
                     String text = String.valueOf(mViewModel.pageNo);
                     text = "Page "+text;
@@ -124,6 +125,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
                     loaderManager.destroyLoader(0);
                     loadingIndicator.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setVisibility(View.GONE);
                     loaderManager.initLoader(0, null, MainFragment.this);
                 }
             }
@@ -132,16 +134,19 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.pageNo++;
-                String text = String.valueOf(mViewModel.pageNo);
-                text = "Page "+text;
-                pageNo.setText(text);
+                if (publicPokeURL==null) {
+                    mViewModel.pageNo++;
+                    String text = String.valueOf(mViewModel.pageNo);
+                    text = "Page "+text;
+                    pageNo.setText(text);
 
-                URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
+                    URL_POKEAPI = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0" + 20*(mViewModel.pageNo-1);
 
-                loaderManager.destroyLoader(0);
-                loadingIndicator.setVisibility(View.VISIBLE);
-                loaderManager.initLoader(0, null, MainFragment.this);
+                    loaderManager.destroyLoader(0);
+                    loadingIndicator.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setVisibility(View.GONE);
+                    loaderManager.initLoader(0, null, MainFragment.this);
+                }
             }
         });
 

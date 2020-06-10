@@ -7,23 +7,23 @@
 
         <item
             android:id="@+id/nav_pokemon"
-            android:icon="@drawable/ic_adjust_black_24dp"
+            android:icon="@drawable/ic_pokeball_bw"
             android:title="Pokemon" />
         <item
             android:id="@+id/nav_items"
-            android:icon="@drawable/ic_adjust_black_24dp"
+            android:icon="@drawable/ic_pokeball_bw"
             android:title="Items" />
         <item
             android:id="@+id/nav_locations"
-            android:icon="@drawable/ic_adjust_black_24dp"
+            android:icon="@drawable/ic_pokeball_bw"
             android:title="Locations" />
         <item
             android:id="@+id/nav_regions"
-            android:icon="@drawable/ic_adjust_black_24dp"
+            android:icon="@drawable/ic_pokeball_bw"
             android:title="Regions" />
         <item
             android:id="@+id/nav_types"
-            android:icon="@drawable/ic_adjust_black_24dp"
+            android:icon="@drawable/ic_pokeball_bw"
             android:title="Types" />
     </group>
 
@@ -31,8 +31,16 @@
         <menu>
             <item
                 android:id="@+id/share"
-                android:icon="@mipmap/ic_launcher_round"
+                android:icon="@drawable/ic_send_white_24dp"
                 android:title="Share" />
+        </menu>
+    </item>
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_person_white_24dp"
+                android:title="Logout" />
         </menu>
     </item>
 

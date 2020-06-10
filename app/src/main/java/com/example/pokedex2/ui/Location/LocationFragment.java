@@ -101,7 +101,7 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onClick(View v) {
                 String searchQuery = searchText.getText().toString();
-                searchQuery.toLowerCase();
+                searchQuery = searchQuery.toLowerCase();
 
                 if (searchQuery!="") {
                     URL_POKEAPI = "https://pokeapi.co/api/v2/"+urlComponent+"/" + searchQuery;
@@ -111,6 +111,7 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setVisibility(View.GONE);
                 loaderManager.initLoader(0, null, LocationFragment.this);
             }
         });
@@ -128,6 +129,7 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
 
                     loaderManager.destroyLoader(0);
                     loadingIndicator.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setVisibility(View.GONE);
                     loaderManager.initLoader(0, null, LocationFragment.this);
                 }
             }
@@ -145,6 +147,7 @@ public class LocationFragment extends Fragment implements LoaderManager.LoaderCa
 
                 loaderManager.destroyLoader(0);
                 loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setVisibility(View.GONE);
                 loaderManager.initLoader(0, null, LocationFragment.this);
             }
         });
