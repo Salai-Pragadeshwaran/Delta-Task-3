@@ -19,8 +19,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.pokedex2.database.FavFragment;
+import com.example.pokedex2.database.PokedexDatabase;
 import com.example.pokedex2.ui.Location.LocationFragment;
 import com.example.pokedex2.ui.Location.RegionFragment;
 import com.example.pokedex2.ui.Location.TypesFragment;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     public static FragmentManager fragmentManager;
+    public static PokedexDatabase pokedexDatabase;
     final int RC_SIGN_IN = 1;
     final String ANONYMOUS = "Anonymous";
     private FirebaseAuth mFirebaseAuth;
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUsername = ANONYMOUS;
 
+        pokedexDatabase = Room.databaseBuilder(getApplicationContext(), PokedexDatabase.class, "pokeDb")
+                .allowMainThreadQueries().build();
 
         Fade fade = new Fade();
         View decor = getWindow().getDecorView();
@@ -190,6 +196,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MainFragment.publicPokeURL = null;
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, MainFragment.newInstance())
+                        .commitNow();
+                break;
+            }
+            case R.id.Fav: {
+                MainFragment.publicPokeURL = null;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, FavFragment.newInstance())
                         .commitNow();
                 break;
             }
